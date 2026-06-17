@@ -48,20 +48,20 @@
                     <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
                     <ul class="space-y-2.5">
                         <li>
-                            <a href="#" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
-                                <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                                </svg>
-                                About Us
-                            </a>
+                            <a href="/about" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+        <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+        </svg>
+        About Us
+    </a>
                         </li>
                         <li>
-                            <a href="#" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
-                                <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                                </svg>
-                                Contact Us
-                            </a>
+                            <a href="/contact" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+        <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        Contact Us
+    </a>
                         </li>
                         <li>
                             <a href="#" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">

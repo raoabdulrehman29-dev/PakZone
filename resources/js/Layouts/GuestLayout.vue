@@ -44,9 +44,11 @@
             </div>
         </div>
     </div>
+    <Footer/>
 </template>
 
 <script setup>
+import Footer from '@/Components/Common/Footer.vue';
 import Navbar from '@/Components/Common/Navbar.vue';
 
 defineProps({

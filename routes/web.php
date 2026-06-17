@@ -4,7 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\Products\ProductController;
+use App\Http\Controllers\Customer\Products\CustomerProductController;
+use App\Http\Controllers\Admin\Products\AdminProductController;
 
 use Inertia\Inertia;
 
@@ -38,13 +39,23 @@ Route::get('/search', function () {
 })->name('search');
 
 // Product Routes
-Route::get('/products', [productController::class, 'index'])->name('products.index');
-Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
-Route::get('/search', [ProductController::class, 'search'])->name('products.search');
+// Products - Using Customer Controller
+Route::get('/products', [CustomerProductController::class, 'index'])->name('products.index');
+Route::get('/products/{slug}', [CustomerProductController::class, 'show'])->name('products.show');
+Route::get('/search', [CustomerProductController::class, 'search'])->name('products.search');
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('products', ProductController::class);
-    Route::patch('products/{id}/status', [ProductController::class, 'updateStatus'])->name('products.status');
+    Route::resource('products', AdminProductController::class);
+    Route::patch('products/{id}/status', [AdminProductController::class, 'updateStatus'])->name('products.status');
 });
+
+// About & Contact Pages
+Route::get('/about', function () {
+    return Inertia::render('About');
+})->name('about');
+
+Route::get('/contact', function () {
+    return Inertia::render('Contact');
+})->name('contact');
 
 require __DIR__.'/auth.php';
