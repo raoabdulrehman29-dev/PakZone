@@ -3,18 +3,29 @@
         <!-- Image Section -->
         <div class="relative overflow-hidden aspect-square">
             <img
-                :src="product.image || 'https://via.placeholder.com/300x300?text=No+Image'"
-                :alt="product.name"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            />
+        :src="product.image || 'https://via.placeholder.com/300x300?text=No+Image'"
+        :alt="product.name"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        loading="lazy"
+        @error="handleImageError"
+    />
             <!-- Discount Badge -->
             <span v-if="product.discount_percentage"
                   class="absolute top-2 right-2 px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full">
                 -{{ product.discount_percentage }}%
             </span>
+            <!-- Best Seller Badge -->
+            <span v-if="product.best_seller"
+                  class="absolute top-2 left-2 px-2 py-1 text-xs font-bold text-white bg-orange-500 rounded-full">
+                Best Seller
+            </span>
             <!-- Wishlist Button -->
-            <button class="absolute top-2 left-2 p-1.5 bg-white/80 hover:bg-white rounded-full shadow-sm transition-colors">
-                <svg class="w-5 h-5 text-gray-400 hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button
+                @click="toggleWishlist"
+                class="absolute top-2 left-2 p-1.5 bg-white/80 hover:bg-white rounded-full shadow-sm transition-colors"
+                :class="{ 'text-red-500': isInWishlist }"
+            >
+                <svg class="w-5 h-5" :fill="isInWishlist ? 'currentColor' : 'none'" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                 </svg>
             </button>
@@ -26,11 +37,11 @@
             <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">{{ product.brand || 'Generic' }}</p>
 
             <!-- Product Name -->
-            <a :href="`/product/${product.slug}`" class="block">
+            <Link :href="`/product/${product.slug}`" class="block">
                 <h3 class="text-sm font-semibold text-gray-800 hover:text-teal-600 transition-colors line-clamp-2 min-h-[40px]">
                     {{ product.name }}
                 </h3>
-            </a>
+            </Link>
 
             <!-- Rating -->
             <div class="flex items-center gap-2 mt-1">
@@ -40,9 +51,9 @@
 
             <!-- Price -->
             <div class="mt-2">
-                <span class="text-xl font-bold text-gray-900">Rs. {{ formatPrice(product.price) }}</span>
-                <span v-if="product.original_price" class="ml-2 text-sm text-gray-400 line-through">
-                    Rs. {{ formatPrice(product.original_price) }}
+                <span class="text-xl font-bold text-gray-900">Rs. {{ formatPrice(product.final_price || product.price) }}</span>
+                <span v-if="product.original_price || product.sale_price" class="ml-2 text-sm text-gray-400 line-through">
+                    Rs. {{ formatPrice(product.original_price || product.price) }}
                 </span>
             </div>
 
@@ -56,19 +67,22 @@
 
             <!-- Add to Cart Button -->
             <button
-                @click="$emit('add-to-cart', product)"
-                class="w-full mt-3 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                @click="addToCart"
+                :disabled="product.stock <= 0"
+                class="w-full mt-3 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
-                Add to Cart
+                {{ product.stock <= 0 ? 'Out of Stock' : 'Add to Cart' }}
             </button>
         </div>
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { Link } from '@inertiajs/vue3';
 import StarRating from '@/Components/Shared/StarRating.vue';
 
 const props = defineProps({
@@ -78,10 +92,26 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['add-to-cart']);
+const emit = defineEmits(['add-to-cart', 'toggle-wishlist']);
+
+const isInWishlist = ref(props.product.is_in_wishlist || false);
 
 const formatPrice = (amount) => {
-    return new Intl.NumberFormat('en-PK').format(amount);
+    return new Intl.NumberFormat('en-PK').format(amount || 0);
+};
+
+const addToCart = () => {
+    if (props.product.stock > 0) {
+        emit('add-to-cart', props.product);
+    }
+};
+
+const toggleWishlist = () => {
+    isInWishlist.value = !isInWishlist.value;
+    emit('toggle-wishlist', props.product.id);
+};
+const handleImageError = (event) => {
+    event.target.src = 'https://via.placeholder.com/300x300?text=No+Image';
 };
 </script>
 

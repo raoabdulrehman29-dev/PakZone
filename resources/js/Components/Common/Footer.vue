@@ -48,44 +48,60 @@
                     <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
                     <ul class="space-y-2.5">
                         <li>
-                            <a href="/about" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
-        <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-        </svg>
-        About Us
-    </a>
+                            <Link href="/about" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                                <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                About Us
+                            </Link>
                         </li>
                         <li>
-                            <a href="/contact" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
-        <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-        </svg>
-        Contact Us
-    </a>
+                            <Link href="/contact" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                                <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                Contact Us
+                            </Link>
                         </li>
                         <li>
-                            <a href="#" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                            <Link href="/track" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                                 <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 Track Order
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                            <Link href="/returns" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                                 <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 Returns Policy
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                            <Link href="/faq" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                                 <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 FAQ
-                            </a>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/deals" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                                <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Today's Deals
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/sell" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                                <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Sell on PakZone
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -95,44 +111,44 @@
                     <h4 class="text-lg font-semibold text-white mb-4">Customer Service</h4>
                     <ul class="space-y-2.5">
                         <li>
-                            <a href="#" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                            <Link href="/help" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                                 <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 Help Center
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                            <Link href="/shipping" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                                 <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 Shipping Info
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                            <Link href="/payments" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                                 <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 Payment Methods
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                            <Link href="/cancellation" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                                 <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 Order Cancellation
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+                            <Link href="/report" class="text-sm text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                                 <svg class="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 Report an Issue
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -153,31 +169,54 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                             </svg>
                             <div>
-                                <p class="text-sm text-gray-400">+92-300-1234567</p>
-                                <p class="text-sm text-gray-400">+92-300-7654321</p>
+                                <p class="text-sm text-gray-400">
+                                    <a href="tel:+923191087089" class="hover:text-teal-400 transition-colors">+92 319 1087089</a>
+                                </p>
+                                <p class="text-sm text-gray-400">
+                                    <a href="https://wa.me/923191087089" target="_blank" class="hover:text-teal-400 transition-colors">
+                                        WhatsApp: +92 319 1087089
+                                    </a>
+                                </p>
                             </div>
                         </div>
                         <div class="flex items-start gap-3">
                             <svg class="w-5 h-5 text-teal-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
-                            <p class="text-sm text-gray-400">support@pakzone.com</p>
+                            <p class="text-sm text-gray-400">
+                                <a href="mailto:raoabdulrehman29@gmail.com" class="hover:text-teal-400 transition-colors">
+                                    raoabdulrehman29@gmail.com
+                                </a>
+                            </p>
                         </div>
                     </div>
 
                     <!-- Newsletter -->
                     <div class="mt-4">
                         <h5 class="text-sm font-medium text-white mb-2">Subscribe to Newsletter</h5>
-                        <div class="flex flex-col sm:flex-row gap-2">
+                        <form @submit.prevent="handleSubscribe" class="flex flex-col sm:flex-row gap-2">
                             <input
+                                v-model="newsletterEmail"
                                 type="email"
                                 placeholder="Your email"
                                 class="flex-1 px-4 py-2 text-sm bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-gray-300 placeholder-gray-500"
+                                required
                             />
-                            <button class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-700 hover:to-teal-600 rounded-lg transition-all duration-200 shadow-lg shadow-teal-500/30 hover:shadow-teal-500/40 whitespace-nowrap">
-                                Subscribe
+                            <button
+                                type="submit"
+                                :disabled="subscribing"
+                                class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-700 hover:to-teal-600 rounded-lg transition-all duration-200 shadow-lg shadow-teal-500/30 hover:shadow-teal-500/40 whitespace-nowrap disabled:opacity-50"
+                            >
+                                <span v-if="!subscribing">Subscribe</span>
+                                <span v-else class="flex items-center gap-1">
+                                    <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Subscribing...
+                                </span>
                             </button>
-                        </div>
+                        </form>
                         <p class="text-xs text-gray-500 mt-2">Get updates on new arrivals & exclusive offers</p>
                     </div>
                 </div>
@@ -269,11 +308,30 @@
 </template>
 
 <script setup>
-// Footer component - no additional logic needed
+import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
+
+const newsletterEmail = ref('');
+const subscribing = ref(false);
+
+const handleSubscribe = () => {
+    if (!newsletterEmail.value.trim()) {
+        alert('Please enter your email address');
+        return;
+    }
+
+    subscribing.value = true;
+
+    // Simulate API call
+    setTimeout(() => {
+        alert('Thank you for subscribing!');
+        newsletterEmail.value = '';
+        subscribing.value = false;
+    }, 1500);
+};
 </script>
 
 <style scoped>
-/* Smooth hover transitions */
 .group-hover\:opacity-100 {
     transition: opacity 0.2s ease-in-out;
 }

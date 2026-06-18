@@ -17,9 +17,10 @@
                         <span class="flex items-center gap-2">
                             <span v-if="category.icon" class="text-lg">{{ category.icon }}</span>
                             {{ category.name }}
+                            <span v-if="category.product_count" class="text-xs text-gray-400">({{ category.product_count }})</span>
                         </span>
                         <svg
-                            class="w-4 h-4 text-gray-400 transition-transform"
+                            class="w-4 h-4 text-gray-400 transition-transform duration-200"
                             :class="{ 'rotate-180': expandedCategories.includes(category.id) }"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         >
@@ -30,9 +31,16 @@
                     <!-- Sub-categories -->
                     <div v-if="expandedCategories.includes(category.id)" class="ml-6 space-y-1">
                         <label v-for="sub in category.children" :key="sub.id"
-                               class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
-                            <input type="checkbox" :value="sub.id" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+                               class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors">
+                            <input
+                                type="checkbox"
+                                :value="sub.id"
+                                v-model="selectedSubCategories"
+                                @change="handleFilterChange"
+                                class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                            >
                             {{ sub.name }}
+                            <span v-if="sub.product_count" class="text-xs text-gray-400">({{ sub.product_count }})</span>
                         </label>
                     </div>
                 </div>
@@ -47,11 +55,23 @@
             <div class="mb-4">
                 <h4 class="text-xs font-medium text-gray-600 mb-2">Price Range</h4>
                 <div class="flex items-center gap-2">
-                    <input type="number" v-model="priceMin" placeholder="Min"
-                           class="w-1/2 px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-1 focus:ring-teal-500 focus:border-transparent">
+                    <input
+                        type="number"
+                        v-model.number="priceMin"
+                        placeholder="Min"
+                        @input="handleFilterChange"
+                        min="0"
+                        class="w-1/2 px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-1 focus:ring-teal-500 focus:border-transparent"
+                    >
                     <span class="text-gray-400">-</span>
-                    <input type="number" v-model="priceMax" placeholder="Max"
-                           class="w-1/2 px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-1 focus:ring-teal-500 focus:border-transparent">
+                    <input
+                        type="number"
+                        v-model.number="priceMax"
+                        placeholder="Max"
+                        @input="handleFilterChange"
+                        min="0"
+                        class="w-1/2 px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-1 focus:ring-teal-500 focus:border-transparent"
+                    >
                 </div>
             </div>
 
@@ -59,17 +79,16 @@
             <div class="mb-4">
                 <h4 class="text-xs font-medium text-gray-600 mb-2">Condition</h4>
                 <div class="space-y-1.5">
-                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500">
-                        New
-                    </label>
-                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500">
-                        Used
-                    </label>
-                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500">
-                        Refurbished
+                    <label v-for="condition in conditions" :key="condition.value"
+                           class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-gray-800 transition-colors">
+                        <input
+                            type="checkbox"
+                            :value="condition.value"
+                            v-model="selectedConditions"
+                            @change="handleFilterChange"
+                            class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                        >
+                        {{ condition.label }}
                     </label>
                 </div>
             </div>
@@ -78,14 +97,34 @@
             <div class="mb-4">
                 <h4 class="text-xs font-medium text-gray-600 mb-2">Customer Rating</h4>
                 <div class="space-y-1.5">
-                    <label v-for="star in 4" :key="star" class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+                    <label v-for="star in [4,3,2,1]" :key="star"
+                           class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-gray-800 transition-colors">
+                        <input
+                            type="checkbox"
+                            :value="star"
+                            v-model="selectedRatings"
+                            @change="handleFilterChange"
+                            class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                        >
                         <div class="flex items-center gap-1">
                             <span class="text-yellow-400">★</span>
                             <span>{{ star }}+</span>
                         </div>
                     </label>
                 </div>
+            </div>
+
+            <!-- In Stock -->
+            <div class="mb-4">
+                <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-gray-800 transition-colors">
+                    <input
+                        type="checkbox"
+                        v-model="inStockOnly"
+                        @change="handleFilterChange"
+                        class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                    >
+                    In Stock Only
+                </label>
             </div>
         </div>
 
@@ -121,26 +160,65 @@
         </div>
 
         <!-- Apply Filters Button -->
-        <button class="w-full mt-6 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg transition-colors shadow-md">
+        <button
+            @click="applyFilters"
+            class="w-full mt-6 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg transition-colors shadow-md"
+        >
             Apply Filters
+        </button>
+
+        <!-- Clear Filters Button -->
+        <button
+            @click="clearFilters"
+            class="w-full mt-2 px-4 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+        >
+            Clear All Filters
         </button>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
     categories: {
         type: Array,
         default: () => []
+    },
+    activeFilters: {
+        type: Object,
+        default: () => ({})
     }
 });
 
+// ============================================
+// STATE
+// ============================================
 const expandedCategories = ref([]);
+const selectedSubCategories = ref([]);
 const priceMin = ref('');
 const priceMax = ref('');
+const selectedConditions = ref([]);
+const selectedRatings = ref([]);
+const inStockOnly = ref(false);
 
+// ============================================
+// DATA
+// ============================================
+const conditions = [
+    { value: 'new', label: 'New' },
+    { value: 'used', label: 'Used' },
+    { value: 'refurbished', label: 'Refurbished' }
+];
+
+// ============================================
+// EMITS
+// ============================================
+const emit = defineEmits(['apply-filters', 'clear-filters']);
+
+// ============================================
+// METHODS
+// ============================================
 const toggleCategory = (id) => {
     const index = expandedCategories.value.indexOf(id);
     if (index > -1) {
@@ -149,4 +227,80 @@ const toggleCategory = (id) => {
         expandedCategories.value.push(id);
     }
 };
+
+const handleFilterChange = () => {
+    // Auto-apply filters after a small delay (debounce)
+    clearTimeout(window.filterTimeout);
+    window.filterTimeout = setTimeout(() => {
+        applyFilters();
+    }, 300);
+};
+
+const applyFilters = () => {
+    const filters = {
+        sub_categories: selectedSubCategories.value.length > 0 ? selectedSubCategories.value.join(',') : null,
+        price_min: priceMin.value || null,
+        price_max: priceMax.value || null,
+        conditions: selectedConditions.value.length > 0 ? selectedConditions.value.join(',') : null,
+        ratings: selectedRatings.value.length > 0 ? selectedRatings.value.join(',') : null,
+        in_stock: inStockOnly.value ? 1 : null
+    };
+
+    // Remove null/empty values
+    Object.keys(filters).forEach(key => {
+        if (filters[key] === null || filters[key] === '' || filters[key] === undefined) {
+            delete filters[key];
+        }
+    });
+
+    emit('apply-filters', filters);
+};
+
+const clearFilters = () => {
+    selectedSubCategories.value = [];
+    priceMin.value = '';
+    priceMax.value = '';
+    selectedConditions.value = [];
+    selectedRatings.value = [];
+    inStockOnly.value = false;
+
+    emit('clear-filters');
+};
 </script>
+
+<style scoped>
+/* Smooth transitions */
+.transition-colors {
+    transition-property: color, background-color, border-color;
+    transition-duration: 200ms;
+}
+
+.transition-transform {
+    transition-property: transform;
+    transition-duration: 200ms;
+}
+
+/* Custom scrollbar for category list */
+.space-y-1 {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.space-y-1::-webkit-scrollbar {
+    width: 4px;
+}
+
+.space-y-1::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.space-y-1::-webkit-scrollbar-thumb {
+    background: #14b8a6;
+    border-radius: 4px;
+}
+
+.space-y-1::-webkit-scrollbar-thumb:hover {
+    background: #0d9488;
+}
+</style>

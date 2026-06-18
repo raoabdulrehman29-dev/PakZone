@@ -15,20 +15,50 @@ class Controller extends BaseController
 
     public function __construct()
     {
-        // Share categories and cart count with all views
         Inertia::share([
             'categories' => function () {
-                return Category::with('children')
-                    ->whereNull('parent_id')
-                    ->where('is_active', true)
-                    ->orderBy('sort_order')
-                    ->get();
+                try {
+                    return Category::with('children')
+                        ->whereNull('parent_id')
+                        ->where('is_active', true)
+                        ->orderBy('sort_order')
+                        ->get()
+                        ->map(function ($category) {
+                            return [
+                                'id' => $category->id,
+                                'name' => $category->name,
+                                'slug' => $category->slug,
+                                'icon' => $category->icon,
+                                'children' => $category->children->map(function ($child) {
+                                    return [
+                                        'id' => $child->id,
+                                        'name' => $child->name,
+                                        'slug' => $child->slug,
+                                    ];
+                                }),
+                            ];
+                        });
+                } catch (\Exception $e) {
+                    return collect([]);
+                }
             },
             'cart_count' => function () {
-                if (auth()->check()) {
-                    return auth()->user()->cart?->items()->sum('quantity') ?? 0;
+                if (!auth()->check()) {
+                    return 0;
                 }
-                return 0;
+
+                try {
+                    $user = auth()->user();
+                    $cart = $user->cart;
+
+                    if (!$cart) {
+                        return 0;
+                    }
+
+                    return $cart->items()->sum('quantity') ?? 0;
+                } catch (\Exception $e) {
+                    return 0;
+                }
             },
         ]);
     }

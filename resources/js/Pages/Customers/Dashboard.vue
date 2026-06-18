@@ -3,7 +3,7 @@
         <!-- Welcome Section -->
         <div class="mb-8">
             <h1 class="text-2xl font-bold text-gray-900">
-                Welcome back, {{ user.name }}! 👋
+                Welcome back, {{ user?.name }}! 👋
             </h1>
             <p class="text-sm text-gray-500 mt-1">
                 Here's what's happening with your orders and account.
@@ -14,22 +14,22 @@
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500">
                 <p class="text-sm text-gray-500">Total Orders</p>
-                <p class="text-2xl font-bold text-gray-900">{{ stats.total_orders || 0 }}</p>
+                <p class="text-2xl font-bold text-gray-900">{{ stats?.total_orders || 0 }}</p>
                 <p class="text-xs text-gray-400 mt-1">Lifetime orders</p>
             </div>
             <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-orange-500">
                 <p class="text-sm text-gray-500">Pending Orders</p>
-                <p class="text-2xl font-bold text-gray-900">{{ stats.pending_orders || 0 }}</p>
+                <p class="text-2xl font-bold text-gray-900">{{ stats?.pending_orders || 0 }}</p>
                 <p class="text-xs text-gray-400 mt-1">Awaiting processing</p>
             </div>
             <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-green-500">
                 <p class="text-sm text-gray-500">Total Spent</p>
-                <p class="text-2xl font-bold text-gray-900">Rs. {{ formatPrice(stats.total_spent || 0) }}</p>
+                <p class="text-2xl font-bold text-gray-900">Rs. {{ formatPrice(stats?.total_spent || 0) }}</p>
                 <p class="text-xs text-gray-400 mt-1">Lifetime spending</p>
             </div>
             <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-500">
                 <p class="text-sm text-gray-500">Wishlist Items</p>
-                <p class="text-2xl font-bold text-gray-900">{{ stats.wishlist_count || 0 }}</p>
+                <p class="text-2xl font-bold text-gray-900">{{ stats?.wishlist_count || 0 }}</p>
                 <p class="text-xs text-gray-400 mt-1">Saved products</p>
             </div>
         </div>
@@ -64,7 +64,7 @@
         </div>
 
         <!-- Recent Orders -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <div class="bg-white rounded-lg shadow-sm p-6">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold text-gray-900">Recent Orders</h3>
                 <a href="/orders" class="text-sm text-teal-600 hover:text-teal-700 font-medium hover:underline">
@@ -93,7 +93,7 @@
                                     class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
                                     :class="getStatusClass(order.status)"
                                 >
-                                    {{ order.status }}
+                                    {{ getStatusLabel(order.status) }}
                                 </span>
                             </td>
                             <td class="px-4 py-3">
@@ -116,69 +116,12 @@
                 </a>
             </div>
         </div>
-
-        <!-- Quick Info Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Saved Addresses -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Saved Addresses</h3>
-                    <a href="/addresses" class="text-sm text-teal-600 hover:text-teal-700 font-medium hover:underline">
-                        Manage →
-                    </a>
-                </div>
-                <div v-if="addresses && addresses.length > 0" class="space-y-3">
-                    <div v-for="address in addresses.slice(0, 2)" :key="address.id" class="text-sm text-gray-600 border-b border-gray-100 pb-3">
-                        <p class="font-medium text-gray-800">{{ address.name }}</p>
-                        <p>{{ address.address }}</p>
-                        <p>{{ address.city }}, {{ address.state }}</p>
-                        <span v-if="address.is_default" class="inline-block mt-1 text-xs text-teal-600 bg-teal-50 px-2 py-0.5 rounded">Default</span>
-                    </div>
-                </div>
-                <p v-else class="text-sm text-gray-500">No saved addresses</p>
-            </div>
-
-            <!-- Account Info -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Account Info</h3>
-                <div class="space-y-2 text-sm">
-                    <div class="flex justify-between">
-                        <span class="text-gray-500">Name</span>
-                        <span class="font-medium text-gray-800">{{ user.name }}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-500">Email</span>
-                        <span class="font-medium text-gray-800">{{ user.email }}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-500">Phone</span>
-                        <span class="font-medium text-gray-800">{{ user.phone || 'Not set' }}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-500">Member Since</span>
-                        <span class="font-medium text-gray-800">{{ formatDate(user.created_at) }}</span>
-                    </div>
-                </div>
-                <div class="mt-4 pt-4 border-t border-gray-200 flex gap-2">
-                    <a href="/profile" class="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
-                        Edit Profile
-                    </a>
-                    <a href="/profile/change-password" class="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
-                        Change Password
-                    </a>
-                </div>
-            </div>
-        </div>
     </CustomerLayout>
 </template>
 
 <script setup>
-import { computed } from 'vue';
 import CustomerLayout from '@/Layouts/CustomerLayout.vue';
 
-// ============================================
-// PROPS
-// ============================================
 const props = defineProps({
     user: {
         type: Object,
@@ -196,16 +139,9 @@ const props = defineProps({
     recentOrders: {
         type: Array,
         default: () => []
-    },
-    addresses: {
-        type: Array,
-        default: () => []
     }
 });
 
-// ============================================
-// METHODS
-// ============================================
 const formatPrice = (amount) => {
     return new Intl.NumberFormat('en-PK').format(amount || 0);
 };
@@ -217,6 +153,18 @@ const formatDate = (date) => {
         month: 'short',
         day: 'numeric'
     });
+};
+
+const getStatusLabel = (status) => {
+    const labels = {
+        pending: 'Pending',
+        processing: 'Processing',
+        shipped: 'Shipped',
+        delivered: 'Delivered',
+        cancelled: 'Cancelled',
+        refunded: 'Refunded'
+    };
+    return labels[status?.toLowerCase()] || status;
 };
 
 const getStatusClass = (status) => {
