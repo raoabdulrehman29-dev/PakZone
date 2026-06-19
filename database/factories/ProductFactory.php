@@ -2,83 +2,41 @@
 
 namespace Database\Factories;
 
-use App\Models\Model;
 use App\Models\Products\Product;
 use App\Models\Products\Category;
 use App\Models\Products\Brand;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Model>
- */
 class ProductFactory extends Factory
 {
     protected $model = Product::class;
 
-    public function definition(): array
+    public function definition()
     {
+        $categories = Category::where('is_active', true)->pluck('id')->toArray();
+        $brands = Brand::where('is_active', true)->pluck('id')->toArray();
+
         return [
-            'name' => $this->faker->words(3,true),
+            'name' => $this->faker->words(rand(2, 4), true),
             'slug' => $this->faker->unique()->slug(),
-            'description' => $this->faker->paragraph(3,true),
-            'short_description' =>$this->faker->sentence(10),
-            'price' => $this->faker->randomFloat(2,10,10000),
-            "sale_price" => $this->faker->optional(0,3)->randomFloat(2,100,10000),
-            'sku' => $this->faker->unique(),ean13(),
-            'stock' => $this->faker->numberBetween(1,100),
-            'low_stock_threshold'=>$this->faker->numberBetween(1,50),
-            'category_id' => Category::inRandomOrder()->first()?->id,
-            'brand_id' => Brand::inRandomOrder()->first()?->id,
-            'featured' =>$this->faker->boolean(20),
-            'best_seller'=> $this->faker->boolean(20),
-            'status' => $this->faker->randomElement(['drafs','published','achived']),
-            'views' => $this->faker->numberBetween(1,100),
-            'rating' => $this->faker->randomFloat(2,0,5),
-            'reviews_count' => $this->faker->numberBetween(0,50),
-            'weight' => $this->faker->randomFloat(2,0.5,10),
-            'diminsions' => $this->faker->optional()->randomElement(
-                [
-                    '10x5x3',
-                    '15x8x4',
-                    '20,10,5',
-                    null,
-                ]
-            ),
-            'created_at' => now(),
-            'updated_at' => now(),
-
-
-
-
-        ];
-    }
-    public function published()
-    {
-        return $this->state(function(array $attributes)
-        {
-            return [
-                'status' => 'published'
-            ];
-        });
-    }
-     public function inStock()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'stock' => $this->faker->numberBetween(1, 100),
-            ];
-        });
-    }
-   public function featured(){
-    return $this->state(function(array $attributes)
-    {
-        return [
-            'featured' => true,
+            'sku' => 'SKU-' . strtoupper($this->faker->unique()->bothify('???-#####')),
+            'description' => $this->faker->paragraphs(rand(2, 4), true),
+            'short_description' => $this->faker->sentence(rand(8, 15)),
+            'price' => $this->faker->randomFloat(2, 100, 10000),
+            'sale_price' => $this->faker->optional(0.4)->randomFloat(2, 50, 8000),
+            'stock' => $this->faker->numberBetween(0, 100),
+            'category_id' => $this->faker->randomElement($categories),
+            'brand_id' => $this->faker->optional(0.7)->randomElement($brands),
+            'featured' => $this->faker->boolean(15),
+            'best_seller' => $this->faker->boolean(10),
             'status' => 'published',
-
+            'rating' => $this->faker->randomFloat(2, 3, 5),
+            'reviews_count' => $this->faker->numberBetween(0, 100),
+            'views' => $this->faker->numberBetween(0, 1000),
+            'weight' => $this->faker->optional(0.5)->randomFloat(2, 0.5, 10),
+            'dimensions' => $this->faker->optional(0.3)->randomElement([
+                '10x5x3', '15x8x4', '20x10x5', '12x6x4', '8x4x2'
+            ]),
         ];
-    });
-   }
-
-
+    }
 }
