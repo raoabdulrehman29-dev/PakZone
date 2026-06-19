@@ -40,7 +40,7 @@
                     <div class="flex-1 space-y-2">
                         <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                             <div>
-                                <a :href="`/product/${item.slug}`" class="font-medium text-gray-800 hover:text-teal-600 transition-colors">
+                                <a :href="`/products/${item.slug}`" class="font-medium text-gray-800 hover:text-teal-600 transition-colors">
                                     {{ item.name }}
                                 </a>
                                 <p v-if="item.variant" class="text-sm text-gray-500">Variant: {{ item.variant }}</p>
@@ -324,7 +324,7 @@ const saveForLater = (item) => {
 const moveToCart = (item) => {
     loading.value = true;
 
-    router.patch(`/cart/move/${item.id}`, {}, {
+    router.post(`/cart/move-to-cart/${item.id}`, {}, {
         preserveState: true,
         preserveScroll: true,
         onFinish: () => {

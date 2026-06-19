@@ -65,6 +65,7 @@
 <script setup>
 import CustomerLayout from '@/Layouts/CustomerLayout.vue';
 import ProductCard from '@/Components/Home/ProductCard.vue';
+import { router } from '@inertiajs/vue3';
 
 defineProps({
     category: {
@@ -86,6 +87,11 @@ defineProps({
 });
 
 const addToCart = (product) => {
-    console.log('Add to cart:', product);
+    router.post('/cart', {
+        product_id: product.id,
+        quantity: 1
+    }, {
+        preserveScroll: true,
+    });
 };
 </script>

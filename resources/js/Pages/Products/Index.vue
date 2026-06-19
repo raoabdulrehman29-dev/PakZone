@@ -52,17 +52,29 @@
                             Categories
                         </h3>
                         <div class="space-y-2">
-                            <label v-for="category in categories" :key="category.id"
-                                   class="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    :value="category.id"
-                                    v-model="selectedCategories"
-                                    class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
-                                >
-                                {{ category.name }}
-                                <span class="text-xs text-gray-400">({{ category.product_count || 0 }})</span>
-                            </label>
+                            <template v-for="category in categories" :key="category.id">
+                                <label class="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        :value="category.id"
+                                        v-model="selectedCategories"
+                                        class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                                    >
+                                    {{ category.name }}
+                                    <span class="text-xs text-gray-400">({{ category.products_count || 0 }})</span>
+                                </label>
+                                <label v-for="child in category.children || []" :key="child.id"
+                                       class="ml-5 flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        :value="child.id"
+                                        v-model="selectedCategories"
+                                        class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                                    >
+                                    {{ child.name }}
+                                    <span class="text-xs text-gray-400">({{ child.products_count || 0 }})</span>
+                                </label>
+                            </template>
                         </div>
                     </div>
 
@@ -260,13 +272,19 @@ const applyFilters = () => {
     loading.value = true;
 
     const filters = {
-        categories: selectedCategories.value.join(','),
-        ratings: selectedRatings.value.join(','),
-        price_min: priceMin.value,
-        price_max: priceMax.value,
-        in_stock: inStockOnly.value ? 1 : 0,
+        categories: selectedCategories.value.length ? selectedCategories.value.join(',') : null,
+        ratings: selectedRatings.value.length ? selectedRatings.value.join(',') : null,
+        price_min: priceMin.value || null,
+        price_max: priceMax.value || null,
+        in_stock: inStockOnly.value ? 1 : null,
         sort: sortBy.value
     };
+
+    Object.keys(filters).forEach((key) => {
+        if (filters[key] === null || filters[key] === '') {
+            delete filters[key];
+        }
+    });
 
     router.get('/products', filters, {
         preserveState: true,
@@ -284,7 +302,12 @@ const clearFilters = () => {
     priceMax.value = '';
     inStockOnly.value = false;
     sortBy.value = 'newest';
-    applyFilters();
+    router.get('/products', {}, {
+        preserveScroll: true,
+        onFinish: () => {
+            loading.value = false;
+        }
+    });
 };
 
 const goToPage = (page) => {
@@ -301,8 +324,12 @@ const goToPage = (page) => {
 };
 
 const addToCart = (product) => {
-    // Will implement later
-    console.log('Add to cart:', product);
+    router.post('/cart', {
+        product_id: product.id,
+        quantity: 1
+    }, {
+        preserveScroll: true,
+    });
 };
 
 // ============================================
@@ -322,7 +349,7 @@ onMounted(() => {
         selectedRatings.value = props.filters.ratings ? props.filters.ratings.split(',') : [];
         priceMin.value = props.filters.price_min || '';
         priceMax.value = props.filters.price_max || '';
-        inStockOnly.value = props.filters.in_stock === 1;
+        inStockOnly.value = props.filters.in_stock === 1 || props.filters.in_stock === '1';
         sortBy.value = props.filters.sort || 'newest';
     }
 });

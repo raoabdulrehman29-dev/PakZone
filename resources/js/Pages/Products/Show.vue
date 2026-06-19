@@ -390,6 +390,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import { router } from '@inertiajs/vue3';
 import CustomerLayout from '@/Layouts/CustomerLayout.vue';
 import ProductGrid from '@/Components/Home/ProductGrid.vue';
 import StarRating from '@/Components/Shared/StarRating.vue';
@@ -489,19 +490,24 @@ const toggleWishlist = () => {
 
 const addToCart = () => {
     if (props.product.stock <= 0) return;
-    console.log('Add to cart:', {
+    router.post('/cart', {
         product_id: props.product.id,
         variant_id: selectedVariant.value?.id,
         quantity: quantity.value
+    }, {
+        preserveScroll: true,
     });
 };
 
 const buyNow = () => {
     if (props.product.stock <= 0) return;
-    console.log('Buy now:', {
+    router.post('/cart', {
         product_id: props.product.id,
         variant_id: selectedVariant.value?.id,
         quantity: quantity.value
+    }, {
+        preserveScroll: true,
+        onSuccess: () => router.get('/checkout'),
     });
 };
 

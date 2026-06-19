@@ -29,11 +29,13 @@ class Controller extends BaseController
                                 'name' => $category->name,
                                 'slug' => $category->slug,
                                 'icon' => $category->icon,
+                                'products_count' => $category->products()->where('status', 'published')->count(),
                                 'children' => $category->children->map(function ($child) {
                                     return [
                                         'id' => $child->id,
                                         'name' => $child->name,
                                         'slug' => $child->slug,
+                                        'products_count' => $child->products()->where('status', 'published')->count(),
                                     ];
                                 }),
                             ];

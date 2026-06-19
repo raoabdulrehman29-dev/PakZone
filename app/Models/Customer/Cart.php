@@ -30,21 +30,25 @@ class Cart extends Model
         return $this->hasMany(CartItem::class);
     }
 
+
+
     public function calculateTotal()
     {
-        $total = $this->items()->sum(\DB::raw('price * quantity'));
+        $total = $this->items()
+            ->sum(\DB::raw('price * quantity'));
         $this->total = $total;
         $this->save();
         return $total;
     }
 
+
     public function isEmpty()
     {
-        return $this->items()->count() === 0;
+        return $this->items()->where('status', 'active')->count() === 0;
     }
 
     public function getItemCount()
     {
-        return $this->items()->sum('quantity');
+        return $this->items()->where('status', 'active')->sum('quantity');
     }
 }

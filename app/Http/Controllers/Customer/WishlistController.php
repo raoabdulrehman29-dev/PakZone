@@ -10,48 +10,75 @@ use Inertia\Inertia;
 
 class WishlistController extends Controller
 {
+    /**
+     * Show wishlist
+     */
     public function index()
     {
-        $wishlist = Wishlist::with(['product', 'product.images'])
+        $wishlist = Wishlist::with(['product.images', 'product.brand'])
             ->where('user_id', auth()->id())
             ->get();
 
-        return Inertia::render('Customer/Wishlist/Index', [
-            'wishlist' => $wishlist,
+        return Inertia::render('Customers/Wishlist/Index', [
+            'wishlist' => $wishlist
         ]);
     }
 
+    /**
+     * Toggle wishlist (add/remove)
+     */
     public function toggle($productId)
     {
-        $existing = Wishlist::where('user_id', auth()->id())
+        $user = auth()->user();
+
+        $existing = Wishlist::where('user_id', $user->id)
             ->where('product_id', $productId)
             ->first();
 
         if ($existing) {
             $existing->delete();
-            return back()->with('success', 'Removed from wishlist');
+            $message = 'Removed from wishlist';
+            $action = 'removed';
+        } else {
+            Wishlist::create([
+                'user_id' => $user->id,
+                'product_id' => $productId,
+            ]);
+            $message = 'Added to wishlist';
+            $action = 'added';
         }
 
-        Wishlist::create([
-            'user_id' => auth()->id(),
-            'product_id' => $productId,
-        ]);
+        if (request()->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'action' => $action
+            ]);
+        }
 
-        return back()->with('success', 'Added to wishlist');
+        return back()->with('success', $message);
     }
 
-    public function remove($id)
+    /**
+     * Remove from wishlist
+     */
+    public function destroy($id)
     {
-        Wishlist::where('user_id', auth()->id())
+        $wishlist = Wishlist::where('user_id', auth()->id())
             ->where('id', $id)
-            ->delete();
+            ->firstOrFail();
+
+        $wishlist->delete();
 
         return back()->with('success', 'Removed from wishlist');
     }
 
+    /**
+     * Move wishlist item to cart
+     */
     public function moveToCart($id)
     {
-        // Will implement later
-        return back()->with('success', 'Moved to cart');
+        // Will implement after CartController is ready
+        return back()->with('success', 'Item moved to cart');
     }
 }

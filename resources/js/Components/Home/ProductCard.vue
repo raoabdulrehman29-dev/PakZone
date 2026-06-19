@@ -1,43 +1,34 @@
 <template>
     <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden group">
         <!-- Image Section -->
-        <div class="relative overflow-hidden aspect-square">
+        <div class="relative overflow-hidden aspect-square bg-gray-100">
             <img
-        :src="product.image || 'https://via.placeholder.com/300x300?text=No+Image'"
-        :alt="product.name"
-        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        loading="lazy"
-        @error="handleImageError"
-    />
+                :src="productImage"
+                :alt="product.name"
+                class="w-full h-full object-cover"
+                @error="handleImageError"
+            />
+
             <!-- Discount Badge -->
-            <span v-if="product.discount_percentage"
+            <span v-if="product.discount_percentage > 0"
                   class="absolute top-2 right-2 px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full">
                 -{{ product.discount_percentage }}%
             </span>
+
             <!-- Best Seller Badge -->
             <span v-if="product.best_seller"
                   class="absolute top-2 left-2 px-2 py-1 text-xs font-bold text-white bg-orange-500 rounded-full">
                 Best Seller
             </span>
-            <!-- Wishlist Button -->
-            <button
-                @click="toggleWishlist"
-                class="absolute top-2 left-2 p-1.5 bg-white/80 hover:bg-white rounded-full shadow-sm transition-colors"
-                :class="{ 'text-red-500': isInWishlist }"
-            >
-                <svg class="w-5 h-5" :fill="isInWishlist ? 'currentColor' : 'none'" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                </svg>
-            </button>
         </div>
 
         <!-- Product Info -->
         <div class="p-4">
-            <!-- Brand/Store -->
-            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">{{ product.brand || 'Generic' }}</p>
+            <!-- Brand -->
+            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">{{ brandName }}</p>
 
             <!-- Product Name -->
-            <Link :href="`/product/${product.slug}`" class="block">
+            <Link :href="`/products/${product.slug}`" class="block">
                 <h3 class="text-sm font-semibold text-gray-800 hover:text-teal-600 transition-colors line-clamp-2 min-h-[40px]">
                     {{ product.name }}
                 </h3>
@@ -46,18 +37,18 @@
             <!-- Rating -->
             <div class="flex items-center gap-2 mt-1">
                 <StarRating :rating="product.rating || 0" :review-count="product.reviews_count || 0" />
-                <span v-if="product.sold_count" class="text-xs text-gray-500">{{ product.sold_count }} sold</span>
+                <span v-if="product.reviews_count" class="text-xs text-gray-500">({{ product.reviews_count }})</span>
             </div>
 
             <!-- Price -->
             <div class="mt-2">
                 <span class="text-xl font-bold text-gray-900">Rs. {{ formatPrice(product.final_price || product.price) }}</span>
-                <span v-if="product.original_price || product.sale_price" class="ml-2 text-sm text-gray-400 line-through">
-                    Rs. {{ formatPrice(product.original_price || product.price) }}
+                <span v-if="product.sale_price" class="ml-2 text-sm text-gray-400 line-through">
+                    Rs. {{ formatPrice(product.price) }}
                 </span>
             </div>
 
-            <!-- Free Delivery Badge -->
+            <!-- Free Delivery -->
             <div class="flex items-center gap-1 mt-1 text-xs text-teal-600">
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -65,7 +56,7 @@
                 <span>Free Delivery</span>
             </div>
 
-            <!-- Add to Cart Button -->
+            <!-- Add to Cart -->
             <button
                 @click="addToCart"
                 :disabled="product.stock <= 0"
@@ -81,8 +72,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import StarRating from '@/Components/Shared/StarRating.vue';
 
 const props = defineProps({
@@ -92,9 +83,17 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['add-to-cart', 'toggle-wishlist']);
+const emit = defineEmits(['add-to-cart']);
 
-const isInWishlist = ref(props.product.is_in_wishlist || false);
+const brandName = computed(() => {
+    return typeof props.product.brand === 'string'
+        ? props.product.brand
+        : props.product.brand?.name || 'Generic';
+});
+
+const productImage = computed(() => {
+    return props.product.image || props.product.images?.[0]?.image || '/images/placeholder.png';
+});
 
 const formatPrice = (amount) => {
     return new Intl.NumberFormat('en-PK').format(amount || 0);
@@ -106,12 +105,12 @@ const addToCart = () => {
     }
 };
 
-const toggleWishlist = () => {
-    isInWishlist.value = !isInWishlist.value;
-    emit('toggle-wishlist', props.product.id);
-};
 const handleImageError = (event) => {
-    event.target.src = 'https://via.placeholder.com/300x300?text=No+Image';
+    // Only try to replace once
+    if (!event.target.dataset.retried) {
+        event.target.dataset.retried = 'true';
+        event.target.src = '/images/placeholder.png';
+    }
 };
 </script>
 
